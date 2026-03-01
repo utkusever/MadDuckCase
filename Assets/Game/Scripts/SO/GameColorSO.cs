@@ -26,3 +26,4 @@ public struct ColorData
         CubeColor = cubeColor;
     }
 }
+

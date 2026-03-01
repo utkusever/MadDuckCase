@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CubeVisual : MonoBehaviour, IColorChanger
+public class VisualController : MonoBehaviour, IColorChanger
 {
     [SerializeField] private Renderer myRenderer;
 
