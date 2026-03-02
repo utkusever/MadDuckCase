@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class VisualController : MonoBehaviour, IColorChanger
 {
-    [SerializeField] private Renderer myRenderer;
+    [SerializeField] protected Renderer myRenderer;
 
-    public void ChangeColor(Color color)
+    public virtual void ChangeColor(Color color)
     {
         myRenderer.material.SetColor("_BaseColor", color);
     }

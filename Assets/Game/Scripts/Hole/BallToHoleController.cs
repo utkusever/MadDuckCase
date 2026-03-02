@@ -27,7 +27,8 @@ public class BallToHoleController : MonoBehaviour
 
 
         ball.JumpTo(holeJumpPoint.position, () => OnBallReachedHole(ball));
-        occupancy.UnRegisterBall(ball);
+        occupancy.Unregister(ball.Cell.x, ball.Cell.y);
+
         BallGridOccupancy.Instance.Collapse();
     }
 

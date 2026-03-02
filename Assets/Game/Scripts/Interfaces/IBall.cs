@@ -1,9 +1,10 @@
-using UnityEngine;
-
-public interface IBall : IMove, IColor
+public interface IBall : IColor, IMovableGridBall
 {
     IColorChanger ColorChanger { get; }
-    Vector2Int Cell { get; set; }
     int Capacity { get; set; }
     int ConnectedGroupId { get; set; }
+}
+
+public interface IMovableGridBall : IGridCoordinate, IMove
+{
 }

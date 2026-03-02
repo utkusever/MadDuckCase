@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class MiniBall : MonoBehaviour, IMiniBall
 {
     [SerializeField] private Rigidbody myRigidBody;
+    [SerializeField] private Collider myCollider;
     [SerializeField] private float seekSpeed = 12f;
     [SerializeField] private float homingStrength = 4f;
     [SerializeField] private VisualController visualController;
@@ -16,7 +18,7 @@ public class MiniBall : MonoBehaviour, IMiniBall
     private Vector3 targetPos;
     private int bounceCount;
     private int targetBounceToSeek;
-
+    private bool hasHit;
 
     public ColorType ColorType { get; private set; }
     public ColorType GetColorType() => ColorType;
@@ -29,22 +31,32 @@ public class MiniBall : MonoBehaviour, IMiniBall
 
     public void SetGrid()
     {
-        
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.TryGetComponent<ICube>(out var cube))
+        if (hasHit) return;
+
+        var collided = collision.collider;
+        if (collided.TryGetComponent<ITargetableCube>(out var cube))
         {
-            if (cube.GetColorType() == GetColorType())
+            if (cube.ColorType == GetColorType())
             {
-                cube.DestroyCube();
-                Destroy(gameObject);
+                hasHit = true;
+                isSeeking = false;
+                myCollider.enabled = false;
+                myRigidBody.velocity = Vector3.zero;
+                myRigidBody.isKinematic = true;
+                this.transform.DOScale(Vector3.zero, 0.1f).OnComplete(() => Destroy(this.gameObject));
+                cube.DestroyObject();
                 return;
             }
+
+            cube.Hit();
         }
 
-        if (collision.collider.CompareTag("Wall"))
+
+        if (collided.CompareTag("Wall"))
         {
             bounceCount++;
 

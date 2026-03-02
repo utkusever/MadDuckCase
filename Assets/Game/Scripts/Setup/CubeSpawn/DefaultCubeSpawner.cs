@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DefaultCubeSpawner : CubeSpawner
 {
-    private string namePrefix = "Cube";
+    [SerializeField] private string namePrefix = "Cube";
 
     public override ICube[,] SpawnCubes(int rowCount, int columnCount)
     {

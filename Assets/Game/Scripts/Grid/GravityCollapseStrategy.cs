@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GravityCollapseStrategy : IGridCollapseStrategy
 {
-    public void Collapse(IBall[,] occupancy, Vector3[,] worldPosProvider)
+    public void Collapse(IMovableGridBall[,] occupancy, Vector3[,] worldPosProvider)
     {
         int rowCount = occupancy.GetLength(0);
         int colCount = occupancy.GetLength(1);
@@ -13,7 +13,7 @@ public class GravityCollapseStrategy : IGridCollapseStrategy
 
             for (int row = 0; row < rowCount; row++)
             {
-                IBall ball = occupancy[row, col];
+                IMovableGridBall ball = occupancy[row, col];
                 if (ball != null)
                 {
                     if (row != currentFillRow)
@@ -29,9 +29,4 @@ public class GravityCollapseStrategy : IGridCollapseStrategy
             }
         }
     }
-}
-
-public interface IGridCollapseStrategy
-{
-    void Collapse(IBall[,] occupancy, Vector3[,] worldPosProvider);
 }

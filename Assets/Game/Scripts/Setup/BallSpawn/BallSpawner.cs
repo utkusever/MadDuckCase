@@ -13,7 +13,8 @@ public class BallSpawner : MonoBehaviour
 
     public void SpawnBalls(List<BallSlotData> list)
     {
-        ballGridOccupancy.SetBallMatrix(Mathf.CeilToInt((float)list.Count / columnCount), columnCount);
+        ballGridOccupancy.Init(Mathf.CeilToInt((float)list.Count / columnCount), columnCount);
+
         for (int i = 0; i < list.Count; i++)
         {
             int col = i % columnCount;
@@ -31,14 +32,14 @@ public class BallSpawner : MonoBehaviour
                 ball.Cell = new Vector2Int(row, col);
                 ball.Capacity = ballData.Capacity;
                 ball.ConnectedGroupId = data.ConnectedGroupId;
-                ballGridOccupancy.RegisterBall(ball);
+                ballGridOccupancy.Register(ball, row, col);
             }
         }
     }
 
     private Vector3 GetPosition(int col, int row)
     {
-        return parent.transform.position + new Vector3(col * spaceOffsetX, 0f, -row * spaceOffsetZ);
+        return parent.transform.position + new Vector3(col * spaceOffsetX, 2f, -row * spaceOffsetZ);
     }
 }
 

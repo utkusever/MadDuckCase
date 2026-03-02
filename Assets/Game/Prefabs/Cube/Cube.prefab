@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5817152167890090859}
   - component: {fileID: 3585124690506223647}
   - component: {fileID: 7644987083183424860}
-  - component: {fileID: 839358261570245868}
+  - component: {fileID: 7946890770256248909}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -100,9 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77dfe509fbb27d442bd38a11e2929ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualController: {fileID: 839358261570245868}
+  visualController: {fileID: 7946890770256248909}
+  myCollider: {fileID: 3585124690506223647}
   <ColorType>k__BackingField: 0
---- !u!114 &839358261570245868
+--- !u!114 &7946890770256248909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,7 +112,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1091344531083315009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99def8f966e947bc881ace0050c52c5a, type: 3}
+  m_Script: {fileID: 11500000, guid: bde9017654a94d5f81c5e8f2035a8b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myRenderer: {fileID: 1692534305962748788}
