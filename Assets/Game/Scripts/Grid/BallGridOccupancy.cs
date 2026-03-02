@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BallGridOccupancy : MonoBehaviour
+public class BallGridOccupancy : BaseGridOccupancy<IBall>
 {
     public static BallGridOccupancy Instance;
     private IBall[,] ballOccupancy;

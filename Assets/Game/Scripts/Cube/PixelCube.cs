@@ -7,4 +7,9 @@ public class PixelCube : MonoBehaviour, ICube
     public ColorType GetColorType() => ColorType;
     public void SetColorType(ColorType colorType) => ColorType = colorType;
     public IColorChanger ColorChanger => visualController;
+
+    public void DestroyCube()
+    {
+        Destroy(this.gameObject);
+    }
 }

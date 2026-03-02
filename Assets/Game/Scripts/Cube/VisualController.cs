@@ -6,8 +6,6 @@ public class VisualController : MonoBehaviour, IColorChanger
 
     public void ChangeColor(Color color)
     {
-        var mat = myRenderer.material;
-        mat.color = color;
-        myRenderer.material = mat;
+        myRenderer.material.SetColor("_BaseColor", color);
     }
 }

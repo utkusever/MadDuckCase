@@ -33,5 +33,6 @@ public class BallToHoleController : MonoBehaviour
 
     private void OnBallReachedHole(IBall ball)
     {
+        OnBallDroppedIntoHole?.Invoke(ball);
     }
 }
