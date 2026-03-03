@@ -9,6 +9,8 @@ public class MiniBallSpawner : MonoBehaviour
     [SerializeField] private MiniBall miniBallPrefab;
     [SerializeField] private GameColorSO gameColorSo;
     private IMiniBallTargetProvider targetProvider;
+    private WaitForSeconds waitForSeconds;
+    private readonly float waitDelay = 0.01f;
 
     private void Awake()
     {
@@ -18,6 +20,8 @@ public class MiniBallSpawner : MonoBehaviour
         {
             Debug.LogError("No Target Provider Found In Mini Ball Spawner");
         }
+
+        waitForSeconds = new WaitForSeconds(waitDelay);
     }
 
     private void OnDestroy()
@@ -54,7 +58,7 @@ public class MiniBallSpawner : MonoBehaviour
             float speed = Random.Range(20f, 25f);
 
             rb.velocity = finalDirection.normalized * speed;
-            yield return new WaitForSeconds(0.01f);
+            yield return waitForSeconds;
         }
     }
 }

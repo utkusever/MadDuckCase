@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 2029233105788437239}
   - component: {fileID: 4008809617733792603}
   - component: {fileID: 7950175783587848180}
+  - component: {fileID: 429721204188108590}
   m_Layer: 7
   m_Name: BigBall
   m_TagString: Untagged
@@ -212,7 +213,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 239973190833555711}
-  - {fileID: 6178709575586243108}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2029233105788437239
@@ -267,6 +267,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myRenderer: {fileID: 5855364799361972836}
   text: {fileID: 5718395312479764667}
+--- !u!114 &429721204188108590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3145563706985200531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc84f8ff82d263d40bad5f5d36110503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.5
+  transformToTween: {fileID: 239973190833555711}
 --- !u!1 &3982140488513608945
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +394,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2921909365725333320}
+  - {fileID: 6178709575586243108}
   m_Father: {fileID: 7070661396707662727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6488574056821857750
@@ -408,15 +423,15 @@ RectTransform:
   m_GameObject: {fileID: 6488574056821857750}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6923652708641479455}
-  m_Father: {fileID: 7070661396707662727}
+  m_Father: {fileID: 239973190833555711}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: 3, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6193827891534074595

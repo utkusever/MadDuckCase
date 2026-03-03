@@ -5,4 +5,5 @@ public interface IMove
 {
     void MoveTo(Vector3 target);
     void JumpTo(Vector3 target, Action onComplete);
+    void FlyToHole(Vector3 holePoint, Action onComplete);
 }

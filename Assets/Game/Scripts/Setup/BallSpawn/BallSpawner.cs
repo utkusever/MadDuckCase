@@ -10,11 +10,12 @@ public class BallSpawner : MonoBehaviour
     [SerializeField] private int columnCount;
 
     [SerializeField] private BallGridOccupancy ballGridOccupancy;
+    [SerializeField] private ConnectedBridgeManager connectedBridgeManager;
 
     public void SpawnBalls(List<BallSlotData> list)
     {
         ballGridOccupancy.Init(Mathf.CeilToInt((float)list.Count / columnCount), columnCount);
-
+        var balls = new List<IBall>(list.Count);
         for (int i = 0; i < list.Count; i++)
         {
             int col = i % columnCount;
@@ -31,9 +32,35 @@ public class BallSpawner : MonoBehaviour
                 ball.ColorChanger.ChangeColor(data.Color);
                 ball.Cell = new Vector2Int(row, col);
                 ball.Capacity = ballData.Capacity;
-                ball.ConnectedGroupId = data.ConnectedGroupId;
                 ballGridOccupancy.Register(ball, row, col);
+                balls.Add(ball);
             }
+        }
+
+        SetConnectedBallsData(list, balls);
+
+        connectedBridgeManager.Build(balls);
+    }
+
+    private void SetConnectedBallsData(List<BallSlotData> list, List<IBall> balls)
+    {
+        var groups = new Dictionary<int, List<IBall>>();
+
+        for (int i = 0; i < balls.Count; i++)
+        {
+            int id = list[i].ConnectedGroupId;
+            if (id <= 0) continue; // no id assigned i mean its not a connected ball
+            if (!groups.ContainsKey(id))
+                groups[id] = new List<IBall>();
+            groups[id].Add(balls[i]);
+        }
+
+        foreach (var kv in groups)
+        {
+            IBall a = kv.Value[0];
+            IBall b = kv.Value[1];
+            a.ConnectedBall = b;
+            b.ConnectedBall = a;
         }
     }
 
@@ -48,6 +75,6 @@ public class BallSlotData
 {
     public ColorType ColorType;
     public Color Color;
-    public int ConnectedGroupId;
     public BallType BallType;
+    public int ConnectedGroupId;
 }

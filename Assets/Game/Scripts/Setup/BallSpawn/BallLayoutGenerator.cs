@@ -20,7 +20,7 @@ public class BallLayoutGenerator
             var list = CreateBallsForColor(kvp.Key, kvp.Value);
             allBalls.AddRange(list);
         }
-
+        AssignRandomConnected(allBalls);
         return allBalls;
     }
 
@@ -87,25 +87,29 @@ public class BallLayoutGenerator
     }
 
 
+    private int globalConnectedId = 1;
+
     private void AssignRandomConnected(List<BallSlotData> list)
     {
         if (list.Count < 2) return;
 
-        int groupCount = Random.Range(0, 3);
+        int pairCount = Random.Range(1, 4);
 
         var available = new List<int>();
         for (int i = 0; i < list.Count; i++)
             available.Add(i);
 
-        for (int g = 0; g < groupCount; g++)
+        for (int i = 0; i < pairCount; i++)
         {
             if (available.Count < 2) break;
 
             int first = TakeRandom(available);
             int second = TakeRandom(available);
 
-            list[first].ConnectedGroupId = g + 1;
-            list[second].ConnectedGroupId = g + 1;
+            int id = globalConnectedId++;
+
+            list[first].ConnectedGroupId = id;
+            list[second].ConnectedGroupId = id;
         }
     }
 
