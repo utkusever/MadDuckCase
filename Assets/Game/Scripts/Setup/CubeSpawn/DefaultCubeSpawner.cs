@@ -24,7 +24,7 @@ public class DefaultCubeSpawner : CubeSpawner
 
     private Vector3 Vector3(int col, int row)
     {
-        var pos = parent.transform.position + new Vector3(col * spaceOffset, 0.5f, row * spaceOffset);
+        var pos = parent.transform.position + new Vector3(col * spaceOffset, 0.7f, row * spaceOffset);
         return pos;
     }
 }

@@ -13,6 +13,7 @@ public class MiniBall : MonoBehaviour
     [SerializeField] private float seekSpeed;
     [SerializeField] private float homingStrength;
     [SerializeField] private MiniBallVisualController visualController;
+    public TrailRenderer TrailRenderer => visualController.TrailRenderer;
     public IColorChanger ColorChanger => visualController;
     public Rigidbody Rigidbody => myRigidBody;
     private bool isSeeking;
@@ -57,9 +58,20 @@ public class MiniBall : MonoBehaviour
         SetColorType(ColorType.None);
         myCollider.enabled = true;
         myRigidBody.isKinematic = false;
+        myRigidBody.velocity = Vector3.zero;
+        myRigidBody.angularVelocity = Vector3.zero;
         SetRandomTargetBounce();
         DOTween.Kill(transform);
-        visualController.TrailRenderer.Clear();
+    }
+
+    public void SetTrailEmitting(bool value)
+    {
+        TrailRenderer.emitting = value;
+    }
+
+    public void ClearTrail()
+    {
+        TrailRenderer.Clear();
     }
 
     public void SetTargetProvider(IMiniBallTargetProvider provider)

@@ -14,7 +14,7 @@ public class CubeVisualController : VisualController
 
     private void Awake()
     {
-        baseScale = transform.localScale;
+        baseScale = tweenTransform.localScale;
     }
 
     public override void ChangeColor(Color color)
