@@ -21,9 +21,3 @@ public struct BallData
     public int Capacity;
     public GameObject Prefab;
 }
-
-public enum BallType
-{
-    Normal,
-    Big
-}

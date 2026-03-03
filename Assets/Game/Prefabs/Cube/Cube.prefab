@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myRenderer: {fileID: 1692534305962748788}
+  tweenTransform: {fileID: 8038777262710003455}
 --- !u!1 &6540790025009225095
 GameObject:
   m_ObjectHideFlags: 0

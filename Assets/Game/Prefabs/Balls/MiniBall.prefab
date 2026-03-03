@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myRigidBody: {fileID: 2801979839721098083}
   myCollider: {fileID: 8641055049808774768}
-  seekSpeed: 12
+  seekSpeed: 22
   homingStrength: 4
   visualController: {fileID: 2834712831033537213}
 --- !u!114 &2834712831033537213

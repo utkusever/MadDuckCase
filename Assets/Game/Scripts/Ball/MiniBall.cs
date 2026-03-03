@@ -37,7 +37,7 @@ public class MiniBall : MonoBehaviour, IMiniBall
     {
         targetProvider = provider;
     }
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (hasHit) return;
@@ -45,6 +45,7 @@ public class MiniBall : MonoBehaviour, IMiniBall
         var collided = collision.collider;
         if (collided.TryGetComponent<ITargetableCube>(out var cube))
         {
+            if (cube.IsDying) return; //unity engine :(((((((
             if (cube.ColorType == GetColorType())
             {
                 hasHit = true;
@@ -98,25 +99,33 @@ public class MiniBall : MonoBehaviour, IMiniBall
 
     private void FixedUpdate()
     {
-        if (!isSeeking) return;
-
-        // what if reserved target killed by someone else ?
-        if (hasTarget && !targetProvider.IsTargetAlive(targetCell))
+        if (isSeeking)
         {
-            ReleaseTargetIfAny();
-            if (!TryAcquireTarget())
+            // what if reserved target killed by someone else ?
+            if (hasTarget && !targetProvider.IsTargetAlive(targetCell))
             {
-                isSeeking = false;
-                return;
+                ReleaseTargetIfAny();
+                if (!TryAcquireTarget())
+                {
+                    isSeeking = false;
+                    return;
+                }
             }
-        }
 
-        Vector3 dir = (targetPos - transform.position).normalized;
-        myRigidBody.velocity = Vector3.Lerp(
-            myRigidBody.velocity,
-            dir * seekSpeed,
-            homingStrength * Time.fixedDeltaTime
-        );
+            Vector3 dir = (targetPos - transform.position).normalized;
+            Vector3 desiredVelocity = dir * seekSpeed;
+            Vector3 steering = desiredVelocity - myRigidBody.velocity;
+            myRigidBody.AddForce(steering * homingStrength, ForceMode.Acceleration);
+        }
+        else
+        {
+            float current = myRigidBody.velocity.magnitude;
+            if (current >= seekSpeed) return;
+            Vector3 dir = myRigidBody.velocity.normalized;
+            if (current < 0.1f) dir = transform.forward;
+            float speedDeficit = seekSpeed - current;
+            myRigidBody.AddForce(dir * speedDeficit, ForceMode.Acceleration);
+        }
     }
 
     private void ReleaseTargetIfAny()

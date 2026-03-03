@@ -22,6 +22,7 @@ public interface IGridCube : IGridCoordinate, IDestroyEvent
 
 public interface ITargetableCube : IDestroyable
 {
+    bool IsDying { get; }
     ColorType ColorType { get; }
     void Hit();
 }

@@ -9,7 +9,7 @@ public class BallLayoutGenerator
     {
         this.gameColorSo = gameColorSo;
     }
-    
+
     public List<BallSlotData> Generate(ColorData[,] colorMap)
     {
         var colorCounts = CountColors(colorMap);
@@ -45,45 +45,14 @@ public class BallLayoutGenerator
             }
         }
 
+        foreach (var kvp in counts)
+        {
+            Debug.Log(kvp.Key + " " + kvp.Value);
+        }
 
         return counts;
     }
-
-    private const float NormalRatio = 0.7f; // %70 Normal (10), %30 Big (20)
-    private const int CapacityNormal = 10;
-    private const int CapacityBig = 20;
-
-
-    private void GetBallCountsForColor(int pixelCount, out int normalCount, out int bigCount)
-    {
-        int needCapacity = pixelCount; // en az bu kadar
-        float avgCapacity = NormalRatio * CapacityNormal + (1f - NormalRatio) * CapacityBig; // ~13
-        int totalBalls = Mathf.Max(1, Mathf.CeilToInt(needCapacity / avgCapacity));
-
-        normalCount = Mathf.RoundToInt(totalBalls * NormalRatio);
-        bigCount = totalBalls - normalCount;
-        if (bigCount < 0)
-        {
-            bigCount = 0;
-            normalCount = totalBalls;
-        }
-
-        int totalCap = normalCount * CapacityNormal + bigCount * CapacityBig;
-        while (totalCap < needCapacity)
-        {
-            if (Random.value < NormalRatio)
-            {
-                normalCount++;
-                totalCap += CapacityNormal;
-            }
-            else
-            {
-                bigCount++;
-                totalCap += CapacityBig;
-            }
-        }
-    }
-
+    
     private List<BallSlotData> CreateBallsForColor(ColorType colorType, int pixelCount)
     {
         GetBallCountsForColor(pixelCount, out int normalCount, out int bigCount);
@@ -91,51 +60,65 @@ public class BallLayoutGenerator
         Color color = gameColorSo.GetColorData(colorType).CubeColor;
 
         var list = new List<BallSlotData>(normalCount + bigCount);
+
         for (int i = 0; i < normalCount; i++)
             list.Add(new BallSlotData
             {
                 ColorType = colorType,
                 Color = color,
-                BallType = BallType.Normal,
-                ConnectedGroupId = 0
+                BallType = BallType.Normal
             });
+
         for (int i = 0; i < bigCount; i++)
             list.Add(new BallSlotData
             {
                 ColorType = colorType,
                 Color = color,
-                BallType = BallType.Big,
-                ConnectedGroupId = 0
+                BallType = BallType.Big
             });
 
-        AssignRandomConnected(list, minGroups: 3, maxGroups: 5);
+        //AssignRandomConnected(list);
+
         return list;
     }
 
-    private void AssignRandomConnected(List<BallSlotData> list, int minGroups, int maxGroups)
+    private void GetBallCountsForColor(int pixelCount, out int normalCount, out int bigCount)
+    {
+        int unit = pixelCount / 10;
+        int maxBig = unit / 2;
+
+        bigCount = Random.Range(0, maxBig + 1);
+        normalCount = unit - (bigCount * 2);
+    }
+
+
+    private void AssignRandomConnected(List<BallSlotData> list)
     {
         if (list.Count < 2) return;
-        int groupCount = Random.Range(minGroups, maxGroups + 1);
-        groupCount = Mathf.Min(groupCount, list.Count / 2); // en az 2'li grup
 
-        var indices = new List<int>(list.Count);
-        for (int i = 0; i < list.Count; i++) indices.Add(i);
+        int groupCount = Random.Range(0, 3);
+
+        var available = new List<int>();
+        for (int i = 0; i < list.Count; i++)
+            available.Add(i);
 
         for (int g = 0; g < groupCount; g++)
         {
-            int groupSize = Random.Range(2, Mathf.Max(2, indices.Count / (groupCount - g) + 1));
-            groupSize = Mathf.Min(groupSize, indices.Count);
-            if (groupSize < 2 || indices.Count < 2) break;
+            if (available.Count < 2) break;
 
-            for (int k = 0; k < groupSize && indices.Count > 0; k++)
-            {
-                int idx = Random.Range(0, indices.Count);
-                int listIndex = indices[idx];
-                indices.RemoveAt(idx);
-                var b = list[listIndex];
-                b.ConnectedGroupId = g + 1;
-                list[listIndex] = b;
-            }
+            int first = TakeRandom(available);
+            int second = TakeRandom(available);
+
+            list[first].ConnectedGroupId = g + 1;
+            list[second].ConnectedGroupId = g + 1;
         }
+    }
+
+    private int TakeRandom(List<int> list)
+    {
+        int idx = Random.Range(0, list.Count);
+        int value = list[idx];
+        list.RemoveAt(idx);
+        return value;
     }
 }

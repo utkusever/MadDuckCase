@@ -39,19 +39,15 @@ public class MiniBallSpawner : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             var go = Instantiate(miniBallPrefab, transform.position, Quaternion.identity);
-
             go.SetColorType(colorType);
             go.ColorChanger.ChangeColor(color);
             go.SetTargetProvider(targetProvider);
             var rb = go.GetComponent<Rigidbody>();
 
-            // Yukarı yön (arena yönüne göre değiştir)
             Vector3 baseDirection = transform.forward;
 
-            // Cone açısı
             float angle = Random.Range(-30f, 30f);
 
-            // Y ekseni etrafında rastgele sapma
             Vector3 finalDirection = Quaternion.Euler(0, angle, 0) * baseDirection;
 
             float speed = Random.Range(20f, 25f);

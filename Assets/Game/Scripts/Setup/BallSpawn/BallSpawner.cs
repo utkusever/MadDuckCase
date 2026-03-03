@@ -44,7 +44,7 @@ public class BallSpawner : MonoBehaviour
 }
 
 
-public struct BallSlotData
+public class BallSlotData
 {
     public ColorType ColorType;
     public Color Color;

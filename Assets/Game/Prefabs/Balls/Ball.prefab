@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 3322258571230652615}
   - component: {fileID: 5894911965273501054}
   - component: {fileID: 5557022129408171292}
-  - component: {fileID: 7941388965072712238}
+  - component: {fileID: 4133110786671095374}
   m_Layer: 7
   m_Name: Ball
   m_TagString: Untagged
@@ -248,12 +248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903d5adff5fe4366af4c72c34d879ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualController: {fileID: 7941388965072712238}
+  visualController: {fileID: 4133110786671095374}
+  capacity: 0
   <Cell>k__BackingField: {x: 0, y: 0}
-  <Capacity>k__BackingField: 0
   <ConnectedGroupId>k__BackingField: 0
   <ColorType>k__BackingField: 0
---- !u!114 &7941388965072712238
+--- !u!114 &4133110786671095374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -262,10 +262,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6305045318577060936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99def8f966e947bc881ace0050c52c5a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8da76cdeec70470f8cc47ff182d84770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myRenderer: {fileID: 8299860934172812893}
+  text: {fileID: 3211754453745292533}
 --- !u!1 &6536214646964887990
 GameObject:
   m_ObjectHideFlags: 0

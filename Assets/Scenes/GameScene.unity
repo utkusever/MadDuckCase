@@ -1106,8 +1106,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 975802577}
-  - component: {fileID: 975802576}
   - component: {fileID: 975802578}
+  - component: {fileID: 975802576}
   - component: {fileID: 975802579}
   m_Layer: 0
   m_Name: BallGridSetup

@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour, IBall
 {
-    [SerializeField] private VisualController visualController;
+    [SerializeField] private BallVisualController visualController;
+    [SerializeField] private int capacity;
 
     public IColorChanger ColorChanger => visualController;
     [field: SerializeField] public Vector2Int Cell { get; set; }
-    [field: SerializeField] public int Capacity { get; set; }
+
+    public int Capacity
+    {
+        get => capacity;
+        set
+        {
+            capacity = value;
+            visualController.UpdateCapacityText(capacity);
+        }
+    }
+
     [field: SerializeField] public int ConnectedGroupId { get; set; }
 
     public void MoveTo(Vector3 target)
@@ -18,10 +29,10 @@ public class Ball : MonoBehaviour, IBall
 
     public void JumpTo(Vector3 target, Action onComplete = null)
     {
-        this.transform.DOJump(target, 10f, 1, 0.25f).OnComplete(() => onComplete?.Invoke());;
+        this.transform.DOJump(target, 10f, 1, 0.25f).OnComplete(() => onComplete?.Invoke());
     }
 
-    [field: SerializeField]  public ColorType ColorType { get; private set; }
+    [field: SerializeField] public ColorType ColorType { get; private set; }
     public ColorType GetColorType() => ColorType;
     public void SetColorType(ColorType colorType) => ColorType = colorType;
 }
