@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class BallLayoutGenerator
 {
-    private GameColorSO gameColorSo;
+    private readonly GameColorSO gameColorSo;
+    private bool isAssignRandomConnected;
 
-    public BallLayoutGenerator(GameColorSO gameColorSo)
+    public BallLayoutGenerator(GameColorSO gameColorSo, bool isAssignRandomConnected)
     {
         this.gameColorSo = gameColorSo;
+        this.isAssignRandomConnected = isAssignRandomConnected;
     }
 
     public List<BallSlotData> Generate(ColorData[,] colorMap)
@@ -20,7 +22,12 @@ public class BallLayoutGenerator
             var list = CreateBallsForColor(kvp.Key, kvp.Value);
             allBalls.AddRange(list);
         }
-        AssignRandomConnected(allBalls);
+
+        if (isAssignRandomConnected)
+        {
+            AssignRandomConnected(allBalls);
+        }
+
         return allBalls;
     }
 

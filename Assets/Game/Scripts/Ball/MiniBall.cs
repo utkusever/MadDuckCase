@@ -3,22 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
-public class MiniBall : MonoBehaviour, IMiniBall
+public class MiniBall : MonoBehaviour
 {
     [SerializeField] private Rigidbody myRigidBody;
     [SerializeField] private Collider myCollider;
     [SerializeField] private float seekSpeed;
     [SerializeField] private float homingStrength;
-    [SerializeField] private VisualController visualController;
+    [SerializeField] private MiniBallVisualController visualController;
     public IColorChanger ColorChanger => visualController;
-
+    public Rigidbody Rigidbody => myRigidBody;
     private bool isSeeking;
     private Vector3 targetPos;
     private int bounceCount;
     private int targetBounceToSeek;
     private bool hasHit;
+    private IObjectPool<MiniBall> miniBallPool;
 
     public ColorType ColorType { get; private set; }
     public ColorType GetColorType() => ColorType;
@@ -26,16 +28,38 @@ public class MiniBall : MonoBehaviour, IMiniBall
 
     private void Awake()
     {
-        targetBounceToSeek = Random.Range(2, 5);
+        SetRandomTargetBounce();
     }
+
 
     private Vector2Int targetCell;
     private bool hasTarget;
     private IMiniBallTargetProvider targetProvider;
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameManager.Instance.DecreaseMiniBallCount();
+    }
+
+    public void SetPool(IObjectPool<MiniBall> objectPool)
+    {
+        miniBallPool = objectPool;
+    }
+
+    public void Reset()
+    {
+        targetCell = Vector2Int.zero;
+        hasTarget = false;
+        hasHit = false;
+        isSeeking = false;
+        targetPos = Vector3.zero;
+        bounceCount = 0;
+        SetColorType(ColorType.None);
+        myCollider.enabled = true;
+        myRigidBody.isKinematic = false;
+        SetRandomTargetBounce();
+        DOTween.Kill(transform);
+        visualController.TrailRenderer.Clear();
     }
 
     public void SetTargetProvider(IMiniBallTargetProvider provider)
@@ -59,7 +83,7 @@ public class MiniBall : MonoBehaviour, IMiniBall
                 myCollider.enabled = false;
                 myRigidBody.velocity = Vector3.zero;
                 myRigidBody.isKinematic = true;
-                this.transform.DOScale(Vector3.zero, 0.1f).OnComplete(() => Destroy(this.gameObject));
+                this.transform.DOScale(Vector3.zero, 0.1f).OnComplete(() => miniBallPool.Release(this));
                 cube.DestroyObject();
                 return;
             }
@@ -139,9 +163,9 @@ public class MiniBall : MonoBehaviour, IMiniBall
         targetProvider.ReleaseTarget(targetCell);
         hasTarget = false;
     }
-}
 
-public interface IMiniBall : IColor
-{
-    IColorChanger ColorChanger { get; }
+    private void SetRandomTargetBounce()
+    {
+        targetBounceToSeek = Random.Range(1, 4);
+    }
 }

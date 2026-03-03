@@ -861,7 +861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419690619}
   m_Layer: 0
-  m_Name: Game_Setup
+  m_Name: GameSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1337,7 +1337,7 @@ Transform:
   m_GameObject: {fileID: 726681953}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -7.77}
+  m_LocalPosition: {x: 0, y: 1, z: -9.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1752,6 +1752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameColorSo: {fileID: 11400000, guid: 4e93671d09a14dd49bae902b405b4609, type: 2}
   ballSpawner: {fileID: 975802576}
+  assignRandomConnectedBalls: 0
 --- !u!114 &975802579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2053,7 +2054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1094757844}
   m_Layer: 0
-  m_Name: ---ENVIRONMENTS---
+  m_Name: ---ENVIRONMENT---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2068,7 +2069,7 @@ Transform:
   m_GameObject: {fileID: 1094757843}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5726483, y: -17.687807, z: -39.973484}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
