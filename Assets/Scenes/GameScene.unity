@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameColorSo: {fileID: 11400000, guid: 4e93671d09a14dd49bae902b405b4609, type: 2}
   ballSpawner: {fileID: 975802576}
-  assignRandomConnectedBalls: 0
+  assignRandomConnectedBalls: 1
 --- !u!114 &975802579
 MonoBehaviour:
   m_ObjectHideFlags: 0
