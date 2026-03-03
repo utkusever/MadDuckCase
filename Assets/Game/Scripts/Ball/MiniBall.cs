@@ -9,8 +9,8 @@ public class MiniBall : MonoBehaviour, IMiniBall
 {
     [SerializeField] private Rigidbody myRigidBody;
     [SerializeField] private Collider myCollider;
-    [SerializeField] private float seekSpeed = 12f;
-    [SerializeField] private float homingStrength = 4f;
+    [SerializeField] private float seekSpeed;
+    [SerializeField] private float homingStrength;
     [SerializeField] private VisualController visualController;
     public IColorChanger ColorChanger => visualController;
 
@@ -33,11 +33,16 @@ public class MiniBall : MonoBehaviour, IMiniBall
     private bool hasTarget;
     private IMiniBallTargetProvider targetProvider;
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.DecreaseMiniBallCount();
+    }
+
     public void SetTargetProvider(IMiniBallTargetProvider provider)
     {
         targetProvider = provider;
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         if (hasHit) return;

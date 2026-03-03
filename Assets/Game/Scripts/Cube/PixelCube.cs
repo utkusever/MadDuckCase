@@ -30,4 +30,9 @@ public class PixelCube : MonoBehaviour, ICube, ITargetableCube
         OnDestroyed?.Invoke(this);
         visualController.PlayDestroyEffect();
     }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.DecreaseCubeCount();
+    }
 }

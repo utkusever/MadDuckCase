@@ -9,13 +9,16 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private LayerMask ballLayerMask;
 
     public event Action<IBall> OnClickedBall;
+    private GameManager gameManager;
 
     private void Awake()
     {
+        gameManager = GameManager.Instance;
     }
 
     private void Update()
     {
+        if (gameManager.IsGameOver) return;
         if (!Input.GetMouseButtonDown(0))
             return;
 

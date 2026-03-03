@@ -28,13 +28,11 @@ public class CubeGridOccupancy : BaseGridOccupancy<IGridCube>
     private void HandleCubeDestroyed(IGridCube cube)
     {
         Unregister(cube.Cell.x, cube.Cell.y);
-        Debug.Log("Cube destroyed. Reserved count: " + CountReserved());
     }
 
     public void ReleaseReservation(Vector2Int cell)
     {
         reserved[cell.x, cell.y] = false;
-        Debug.Log("Reserved count: " + CountReserved());
     }
 
     public bool IsCellAlive(Vector2Int cell)
@@ -79,7 +77,7 @@ public class CubeGridOccupancy : BaseGridOccupancy<IGridCube>
         if (found)
         {
             SetReserved(cell.x, cell.y);
-            Debug.Log("Reserved count: " + CountReserved());
+            //Debug.Log("Reserved count: " + CountReserved());
         }
 
         return found;

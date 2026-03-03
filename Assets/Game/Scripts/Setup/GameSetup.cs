@@ -13,6 +13,7 @@ public class GameSetup : MonoBehaviour
         int width = colorMap.GetLength(1);
         int height = colorMap.GetLength(0);
         var spawnedCubes = cubeSpawner.SpawnCubes(width, height);
+        GameManager.Instance.SetTotalCubeCount(spawnedCubes.Length);
         cubeGridOccupancy.Init(width, height);
         ballAreaSetup.SetupLayout(colorMap);
         FillCubeData(height, width, spawnedCubes, colorMap);
@@ -36,7 +37,7 @@ public class GameSetup : MonoBehaviour
     private void FillCubeGridOccupancy(ICube cube, int row, int col)
     {
         cube.Cell = new Vector2Int(row, col);
-        cubeGridOccupancy.Register(cube,row,col);
+        cubeGridOccupancy.Register(cube, row, col);
         cubeGridOccupancy.SetWorldPosition(row, col, ((MonoBehaviour)cube).transform.position);
     }
 }

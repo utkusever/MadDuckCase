@@ -30,6 +30,7 @@ public class MiniBallSpawner : MonoBehaviour
         var spawnCount = ball.Capacity;
         var colorType = ball.GetColorType();
         StartCoroutine(SpawnRoutine(spawnCount, colorType));
+        GameManager.Instance.IncreaseMiniBallCount(spawnCount);
     }
 
     private IEnumerator SpawnRoutine(int spawnCount, ColorType colorType)

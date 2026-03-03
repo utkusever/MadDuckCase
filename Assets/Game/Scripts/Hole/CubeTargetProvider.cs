@@ -8,7 +8,6 @@ public class CubeTargetProvider : MonoBehaviour, IMiniBallTargetProvider
     {
         cell = default;
         targetPos = default;
-        if (cubeGridOccupancy == null) return false;
         return cubeGridOccupancy.TryGetBottomTarget(colorType, fromPos, out cell, out targetPos);
     }
 

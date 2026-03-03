@@ -45,14 +45,9 @@ public class BallLayoutGenerator
             }
         }
 
-        foreach (var kvp in counts)
-        {
-            Debug.Log(kvp.Key + " " + kvp.Value);
-        }
-
         return counts;
     }
-    
+
     private List<BallSlotData> CreateBallsForColor(ColorType colorType, int pixelCount)
     {
         GetBallCountsForColor(pixelCount, out int normalCount, out int bigCount);

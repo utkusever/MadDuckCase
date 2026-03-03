@@ -9,6 +9,7 @@ public class BallAreaSetup : MonoBehaviour
     {
         var generator = new BallLayoutGenerator(gameColorSo);
         var leveBallSlotDatas = generator.Generate(colorMap);
+        GameManager.Instance.SetTotalQueueBallCount(leveBallSlotDatas.Count);
         ballSpawner.SpawnBalls(leveBallSlotDatas);
     }
 }
