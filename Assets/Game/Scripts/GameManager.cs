@@ -6,11 +6,18 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField] private int maxMiniBallCount;
+
     private int activeMiniBallCount;
     private int remainingCubeCount;
     private int remainingQueueBallCount;
     private bool isGameOver;
     public bool IsGameOver => isGameOver;
+    public int MaxCapacity => maxMiniBallCount;
+    public event Action<int> OnActiveMiniBallCountChanged;
+
+    public event Action OnWin;
+    public event Action OnLose;
 
     private void Awake()
     {
@@ -33,12 +40,14 @@ public class GameManager : MonoBehaviour
     public void IncreaseMiniBallCount(int countToIncrease)
     {
         activeMiniBallCount += countToIncrease;
+        OnActiveMiniBallCountChanged?.Invoke(activeMiniBallCount);
         CheckFail();
     }
 
     public void DecreaseMiniBallCount()
     {
         activeMiniBallCount--;
+        OnActiveMiniBallCountChanged?.Invoke(activeMiniBallCount);
         CheckWin();
     }
 
@@ -56,7 +65,8 @@ public class GameManager : MonoBehaviour
 
     private void CheckFail()
     {
-        if (activeMiniBallCount > 50)
+        if (isGameOver) return;
+        if (activeMiniBallCount > maxMiniBallCount)
             Lose();
     }
 
@@ -73,13 +83,15 @@ public class GameManager : MonoBehaviour
 
     private void Lose()
     {
-        print("FAIL");
+        if (isGameOver) return;
         isGameOver = true;
+        OnLose?.Invoke();
     }
 
     private void Win()
     {
-        print("WIN");
+        if (isGameOver) return;
         isGameOver = true;
+        OnWin?.Invoke();
     }
 }
