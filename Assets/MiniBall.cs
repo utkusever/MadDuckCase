@@ -29,8 +29,13 @@ public class MiniBall : MonoBehaviour, IMiniBall
         targetBounceToSeek = Random.Range(2, 5);
     }
 
-    public void SetGrid()
+    private Vector2Int targetCell;
+    private bool hasTarget;
+    private IMiniBallTargetProvider targetProvider;
+
+    public void SetTargetProvider(IMiniBallTargetProvider provider)
     {
+        targetProvider = provider;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,6 +49,7 @@ public class MiniBall : MonoBehaviour, IMiniBall
             {
                 hasHit = true;
                 isSeeking = false;
+                ReleaseTargetIfAny();
                 myCollider.enabled = false;
                 myRigidBody.velocity = Vector3.zero;
                 myRigidBody.isKinematic = true;
@@ -67,9 +73,43 @@ public class MiniBall : MonoBehaviour, IMiniBall
         }
     }
 
+    private void TryStartSeeking()
+    {
+        if (TryAcquireTarget())
+            isSeeking = true;
+    }
+
+    private bool TryAcquireTarget()
+    {
+        if (targetProvider == null) return false;
+
+        if (targetProvider.TryGetTarget(GetColorType(), transform.position, out var cell, out var pos))
+        {
+            targetCell = cell;
+            targetPos = pos;
+            hasTarget = true;
+            return true;
+        }
+
+        hasTarget = false;
+        return false;
+    }
+
+
     private void FixedUpdate()
     {
         if (!isSeeking) return;
+
+        // what if reserved target killed by someone else ?
+        if (hasTarget && !targetProvider.IsTargetAlive(targetCell))
+        {
+            ReleaseTargetIfAny();
+            if (!TryAcquireTarget())
+            {
+                isSeeking = false;
+                return;
+            }
+        }
 
         Vector3 dir = (targetPos - transform.position).normalized;
         myRigidBody.velocity = Vector3.Lerp(
@@ -79,15 +119,11 @@ public class MiniBall : MonoBehaviour, IMiniBall
         );
     }
 
-    private void TryStartSeeking()
+    private void ReleaseTargetIfAny()
     {
-        // var bottomCell = GridManager.Instance.GetBottomCell(myColor);
-        //
-        // if (bottomCell == null)
-        //     return;
-        //
-        // targetPos = bottomCell.WorldPosition;
-        // isSeeking = true;
+        if (!hasTarget || targetProvider == null) return;
+        targetProvider.ReleaseTarget(targetCell);
+        hasTarget = false;
     }
 }
 

@@ -8,10 +8,16 @@ public class MiniBallSpawner : MonoBehaviour
     [SerializeField] private BallToHoleController ballToHoleController;
     [SerializeField] private MiniBall miniBallPrefab;
     [SerializeField] private GameColorSO gameColorSo;
+    private IMiniBallTargetProvider targetProvider;
 
     private void Awake()
     {
         ballToHoleController.OnBallDroppedIntoHole += Spawn;
+        targetProvider = this.GetComponent<IMiniBallTargetProvider>();
+        if (targetProvider == null)
+        {
+            Debug.LogError("No Target Provider Found In Mini Ball Spawner");
+        }
     }
 
     private void OnDestroy()
@@ -36,7 +42,7 @@ public class MiniBallSpawner : MonoBehaviour
 
             go.SetColorType(colorType);
             go.ColorChanger.ChangeColor(color);
-
+            go.SetTargetProvider(targetProvider);
             var rb = go.GetComponent<Rigidbody>();
 
             // Yukarı yön (arena yönüne göre değiştir)

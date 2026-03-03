@@ -14,7 +14,6 @@ public class CubeGridOccupancy : BaseGridOccupancy<IGridCube>
     {
         base.Register(item, row, col);
         item.OnDestroyed += HandleCubeDestroyed;
-        base.Register(item, row, col);
     }
 
     public override void Unregister(int row, int col)
@@ -32,47 +31,60 @@ public class CubeGridOccupancy : BaseGridOccupancy<IGridCube>
         print("Destroyed: " + cube.Cell.x + " , " + cube.Cell.y);
     }
 
-    public bool IsReserved(int row, int col) => IsInside(row, col) && reserved[row, col];
-
-    public void SetReserved(int row, int col, bool value)
+    public void ReleaseReservation(Vector2Int cell)
     {
-        if (!IsInside(row, col)) return;
-        reserved[row, col] = value;
+        reserved[cell.x, cell.y] = false;
     }
 
-    public bool TryGetBottomTarget(ColorType color, Vector3 fromPos, out Vector2Int cell, out Vector3 pos)
+    public bool IsCellAlive(Vector2Int cell)
+    {
+        return occupancy[cell.x, cell.y] != null;
+    }
+
+    public bool TryGetBottomTarget(ColorType color, Vector3 ballPos, out Vector2Int cell, out Vector3 pos)
     {
         cell = default;
         pos = default;
 
         float bestDist = float.MaxValue;
         bool found = false;
-
+        //look for each col's bottom row
         for (int col = 0; col < ColCount; col++)
         {
-            // alttan üste tara: o sütundaki en alt uygun küp
-            for (int row = RowCount - 1; row >= 0; row--)
+            for (int row = 0; row < RowCount; row++)
             {
                 var cube = occupancy[row, col];
-                if (cube == null) continue;
-                if (cube.ColorType != color) continue;
-                if (reserved[row, col]) continue;
+                if (cube == null) continue; // if cube is null go look for upper cube
 
-                Vector3 wp = worldPositions[row, col];
-                float d = (wp - fromPos).sqrMagnitude;
-                if (d < bestDist)
+                // if there is a cube check it
+                if (cube.ColorType == color && !reserved[row, col])
                 {
-                    bestDist = d;
-                    cell = new Vector2Int(row, col);
-                    pos = wp;
-                    found = true;
+                    Vector3 worldPosition = worldPositions[row, col];
+                    float distance = (worldPosition - ballPos).sqrMagnitude;
+                    if (distance < bestDist)
+                    {
+                        bestDist = distance;
+                        cell = new Vector2Int(row, col);
+                        pos = worldPosition;
+                        found = true;
+                    }
                 }
 
-                break; // bu sütunda en altı bulduk, üste çıkma
+                // yeah I founded the bottom cube in this col break it
+                break;
             }
         }
 
-        if (found) reserved[cell.x, cell.y] = true;
+        if (found)
+        {
+            SetReserved(cell.x, cell.y);
+        }
+
         return found;
+    }
+
+    private void SetReserved(int row, int col)
+    {
+        reserved[row, col] = true;
     }
 }

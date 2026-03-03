@@ -42,12 +42,12 @@ public class CubeVisualController : VisualController
     {
         if (isDying) return;
         isDying = true;
-
+        DOTween.Kill(this.transform);
         mat.DOColor(flashColor, "_BaseColor", 0.05f).OnComplete(() => mat.DOColor(baseColor, "_BaseColor", 0.09f));
 
         var s = DOTween.Sequence();
         s.Append(transform.DOScale(new Vector3(0.92f, 2f, 0.92f), 0.05f).SetEase(Ease.OutQuad));
         s.Append(transform.DOScale(new Vector3(1.08f, 0.7f, 1.08f), 0.06f).SetEase(Ease.InOutQuad));
-        s.Append(transform.DOScale(Vector3.zero, 0.07f).SetEase(Ease.OutBack));
+        s.Append(transform.DOScale(Vector3.zero, 0.07f).SetEase(Ease.OutBack)).OnComplete(() => Destroy(gameObject));
     }
 }
