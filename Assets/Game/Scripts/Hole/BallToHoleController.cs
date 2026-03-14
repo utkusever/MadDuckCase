@@ -45,6 +45,7 @@ public class BallToHoleController : MonoBehaviour
 
     private bool CanDequeue(IBall ball)
     {
+        return ball.Cell.x == 0;
         int row = ball.Cell.x;
         int col = ball.Cell.y;
 
